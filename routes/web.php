@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('admin-panel')->group( function () {
+	Route::get('/', 'Admin\HomeController@index');
+});
