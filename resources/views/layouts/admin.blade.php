@@ -10,6 +10,7 @@
     <title>@yield('title')</title>
 
     @include('admin._includes._head')
+    @yield('styles')
 </head>
 <body>
 
@@ -21,6 +22,7 @@
 		@yield('content')
 	</div>
 	
-	@include('admin._includes._footer');
+	@include('admin._includes._footer')
+	@yield('scripts')
 </body>
 </html>

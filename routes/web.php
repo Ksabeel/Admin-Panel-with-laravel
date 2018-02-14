@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin-panel')->group( function () {
-	Route::get('/', 'Admin\HomeController@index');
+Route::prefix('admin-panel')->namespace('Admin')->group( function () {
+	Route::get('/', 'HomeController@index')->name('admin.dashboard');
+	Route::resource('posts', 'PostController');
 });
