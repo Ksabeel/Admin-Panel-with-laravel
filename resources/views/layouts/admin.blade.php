@@ -19,7 +19,9 @@
 	@include('admin._includes._sidebar')
 
 	<div id="wrapper">
-		@yield('content')
+		<div id="page-wrapper">
+			@yield('content')
+		</div>
 	</div>
 	
 	@include('admin._includes._footer')
