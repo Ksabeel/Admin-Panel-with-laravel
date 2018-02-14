@@ -12,7 +12,7 @@
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">All Posts</h1>
+			<h1 class="page-header">All Posts <a href="{{ route('posts.create') }}" class="btn btn-success pull-right">Add New Post</a></h1>
 		</div>
 	</div>
 
@@ -21,7 +21,7 @@
 	    <div class="col-lg-12">
 	        <div class="panel panel-default">
 	            <div class="panel-heading">
-	                Manage All Posts
+	                Manage All Posts 
 	            </div>
 	            <!-- /.panel-heading -->
 	            <div class="panel-body">
