@@ -20,8 +20,8 @@ class CreatePostsTable extends Migration
             $table->integer('category_id')->unsigned();
             $table->longText('body');
             $table->string('image')->nullable();
-            $table->integer('status')->default(1);
-            $table->integer('posted_by')->default(1);
+            $table->integer('status')->default(0)->unsigned();
+            $table->integer('posted_by')->default(0)->unsigned();
             $table->timestamps();
         });
     }
