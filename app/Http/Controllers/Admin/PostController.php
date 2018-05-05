@@ -62,11 +62,11 @@ class PostController extends Controller
         $post->image = $request->image;
         $post->body = $request->body;
 
-        if ($request->posted_by) {
-            $post->posted_by = $request->posted_by;
-        } else {
-            $post->posted_by = 0;
-        }
+        // if ($request->posted_by) {
+        //     $post->posted_by = $request->posted_by;
+        // } else {
+        //     $post->posted_by = 0;
+        // }
         $post->save();
 
         $post->tags()->sync($request->tags);
@@ -115,7 +115,7 @@ class PostController extends Controller
             'category_id' => 'required',
             'tags'        => 'required',
             'image'       => 'sometimes|image',
-            'body'        => 'required|min:50'
+            'body'        => 'required|min:5'
         ]);
 
         $post = Post::where('id', $id)->first();

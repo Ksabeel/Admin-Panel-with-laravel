@@ -11,15 +11,10 @@ class HomeController extends Controller
 	{
 		$this->middleware('auth:admin');
 	}
-	
-    public function index()
-    {
-    	return view('admin.dashboard');
-    }
 
     public function dashboard()
     {
-    	return view('admin.dashboard2');
+    	return view('admin.dashboard');
     }
 
 }

@@ -41,7 +41,7 @@ class PermissionController extends Controller
         if ($request->permission_type == 'basic') {
             
             $request->validate([
-                'name'        => 'required|max:255|unique:permissions,name',
+                'name'        => 'required|max:255|unique:permissions',
                 'slug'        => 'required|max:255|alpha_dash',
                 'description' => 'sometimes|max:255' 
             ]);
@@ -99,7 +99,7 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        $permission = Permission::where('id', $id)->first();
+        $permission = Permission::findOrFail($id)->first();
         return view('admin.permissions.edit', compact('permission'));
     }
 
@@ -117,7 +117,7 @@ class PermissionController extends Controller
             'description' => 'sometimes|max:255' 
         ]);
 
-        $permission = Permission::where('id', $id)->first();
+        $permission = Permission::findOrFail($id)->first();
         $permission->name = $request->name;
         $permission->description = $request->description;
         $permission->save();
@@ -135,8 +135,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $permission = Permission::where('id', $id)->first();
-        $permission->delete();
+        Permission::findOrFail($id)->delete();
 
         Session::flash('success', 'Permission has been successfully deleted!');
 

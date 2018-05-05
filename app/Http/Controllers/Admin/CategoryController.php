@@ -42,7 +42,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([ 'name' => 'required|min:3|max:100|unique:categories,name' ]);
+        $request->validate([ 'name' => 'required|min:3|max:100|unique:categories' ]);
 
         $category = new Category;
         $category->name = $request->name;
@@ -72,7 +72,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::where('id', $id)->first();
+        $category = Category::findOrFail($id)->first();
         return view('admin.categories.edit', compact('category'));
     }
 
@@ -87,7 +87,7 @@ class CategoryController extends Controller
     {
         $request->validate([ 'name' => "required|min:3|max:100|unique:categories,name,$id" ]);
 
-        $category = Category::where('id', $id)->first();
+        $category = Category::findOrFail($id)->first();
         $category->name = $request->name;
         $category->save();
 
@@ -104,7 +104,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::where('id', $id)->delete();
+        $category = Category::findOrFail($id)->delete();
 
         Session::flash('success', 'Category deleted successfully');
 

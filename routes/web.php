@@ -19,9 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin-panel')->namespace('Admin')->group( function () {
-	Route::get('/', 'HomeController@index')->name('admin.dashboard');
-	Route::get('/dashboard', 'HomeController@dashboard');
+Route::prefix('admin')->namespace('Admin')->group( function () {
+	Route::get('/', 'HomeController@dashboard')->name('admin.dashboard');
 	Route::resources([
 		'posts' => 'PostController',
 		'tags' => 'TagController',

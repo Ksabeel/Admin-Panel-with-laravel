@@ -83,7 +83,7 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        $admin = Admin::where('id', $id)->first();
+        $admin = Admin::findOrFail($id)->first();
         $roles = Role::all();
         return view('admin.admins.edit', compact('admin','roles'));
     }
@@ -99,7 +99,7 @@ class AdminController extends Controller
     {
         $request->validate(['name' => 'required|string|max:255']);
 
-        $admin = Admin::where('id', $id)->first();
+        $admin = Admin::findOrFail($id)->first();
         $admin->name = $request->name;
 
         if ($request->password_options == 'auto') {
@@ -129,7 +129,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        $admin = Role::where('id', $id)->first();
+        $admin = Admin::findOrFail($id)->first();
         $admin->roles()->detach();
         $admin->delete();
 
