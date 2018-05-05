@@ -1,54 +1,46 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Post $post->slug')
+@section('title', "Edit Post $post->slug")
 
 @section('styles')
 	<link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 @endsection
 
 @section('content')
-
-	<div class="row">
-		<div class="col-lg-12">
-			<h1 class="page-header">Edit Post >>> {{ $post->title }}</h1>
-		</div>
-	</div>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+	<h2 class="h2">Edit Post <i class="fa fa-arrow-right"></i> {{ $post->slug }}</h2>
+</div>
 
 	<form action="{{ route('posts.update', $post->id) }}" method="post" enctype="multipart/form-data">
-		{{ csrf_field() }}
-		{{ method_field('PUT') }}
+		@csrf
+		@method('PUT')
 		<div class="row">
 			<div class="col-md-6">
-				<div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+				<div class="form-group">
 					<label for="title">Title:</label>
-					<input type="text" name="title" id="title" class="form-control" value="{{ $post->title }}">
+					<input type="text" name="title" id="title" class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" value="{{ $post->title }}">
 					@if($errors->has('title'))
-						<span class="help-block">
+						<span class="invalid-feedback">
 							<strong>{{ $errors->first('title') }}</strong>
 						</span>
 					@endif
 				</div>
 
-				<div class="form-group {{ $errors->has('slug') ? 'has-error' : '' }}">
+				<div class="form-group">
 					<label for="slug">Slug:</label>
-					<input type="text" name="slug" id="slug" class="form-control" value="{{ $post->slug }}">
-					@if($errors->has('slug'))
-						<span class="help-block">
-							<strong>{{ $errors->first('slug') }}</strong>
-						</span>
-					@endif
+					<input type="text" name="slug" id="slug" class="form-control" value="{{ $post->slug }}" disabled>
 				</div>
 
-				<div class="form-group {{ $errors->has('category_id') ? 'has-error' : '' }}">
+				<div class="form-group">
 					<label for="category_id">Categories:</label>
-					<select name="category_id" id="category_id" class="form-control">
+					<select name="category_id" id="category_id" class="custom-select  {{ $errors->has('category_id') ? 'is-invalid' : '' }}" required>
 						<option>Select Category</option>
 						@foreach($categories as $category)
-							<option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected="selected"' : '' }}>{{ $category->name }}</option>
+							<option value="{{ $category->id }}" {{ $category->id == $post->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
 						@endforeach
 					</select>
 					@if($errors->has('category_id'))
-						<span class="help-block">
+						<span class="invalid-feedback">
 							<strong>{{ $errors->first('category_id') }}</strong>
 						</span>
 					@endif
@@ -56,9 +48,9 @@
 			</div>
 
 			<div class="col-md-6">
-				<div class="form-group {{ $errors->has('tags') ? 'has-error' : '' }}">
+				<div class="form-group">
 					<label for="tags">Tags:</label>
-					<select name="tags[]" id="tags" class="form-control select2" multiple="multiple" data-palceholder="Select Tags" value="{{ old('tags') }}">
+					<select name="tags[]" id="tags" class="custom-select select2  {{ $errors->has('tags') ? 'is-invalid' : '' }}" multiple="multiple" data-palceholder="Select Tags">
 						@foreach($tags as $tag)
 							<option value="{{ $tag->id }}"
 								@foreach ($post->tags as $postTag)
@@ -70,48 +62,47 @@
 						@endforeach
 					</select>
 					@if($errors->has('tags'))
-						<span class="help-block">
+						<span class="invalid-feedback">
 							<strong>{{ $errors->first('tags') }}</strong>
 						</span>
 					@endif
 				</div>
 
-				<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-					<label for="image">Image:</label>
-					<input type="file" class="form-control" name="image" id="image">
-					@if($errors->has('image'))
-						<span class="help-block">
-							<strong>{{ $errors->first('image') }}</strong>
-						</span>
-					@endif
+				<div class="form-group mt-5">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input  {{ $errors->has('image') ? 'is-invalid' : '' }}" name="image" id="image">
+						<label for="image" class="custom-file-label">Choose File...</label>
+						@if($errors->has('image'))
+							<span class="invalid-feedback">
+								<strong>{{ $errors->first('image') }}</strong>
+							</span>
+						@endif
+					</div>
 				</div>
 
-				<div class="form-inline {{ $errors->has('posted_by') ? 'has-error' : '' }}" style="margin-top: 40px;">
-					<input type="checkbox" name="posted_by" id="posted_by" value="1" {{ $post->posted_by == 1 ? 'checked' : 0 }}>
-					<label for="posted_by">Posted By:</label>
-					@if($errors->has('posted_by'))
-						<span class="help-block">
-							<strong>{{ $errors->first('posted_by') }}</strong>
-						</span>
-					@endif
+				<div class="form-group mt-5">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" name="posted_by" id="posted_by" value="1" {{ $post->posted_by == 1 ? 'checked' : 0 }}>
+						<label for="posted_by" class="custom-control-label">Posted By:</label>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
-			<div class="form-group {{ $errors->has('body') ? 'has-error' : '' }}">
+			<div class="form-group">
 				<label for="body">Body:</label>
-				<textarea name="body" id="editor1" rows="20" class="form-control">{{ $post->body }}</textarea>
+				<textarea name="body" id="editor1" rows="20" class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}">{{ $post->body }}</textarea>
 				@if($errors->has('body'))
-					<span class="help-block">
+					<span class="invalid-feedback">
 						<strong>{{ $errors->first('body') }}</strong>
 					</span>
 				@endif
 			</div>
 
 			<div class="form-group">
-				<button type="submit" class="btn btn-success">Save Changes</button>
-				<a href="{{ route('posts.index') }}" class="btn btn-danger">Cancel</a>
+				<button type="submit" class="btn btn-outline-success">Save Changes</button>
+				<a href="{{ route('posts.index') }}" class="btn btn-outline-danger">Cancel</a>
 			</div>
 		</div>
 	</form>
@@ -119,12 +110,14 @@
 @endsection
 
 @section('scripts')
- <script src="{{ asset('js/select2.full.min.js') }}"></script>
- <script src="{{ asset('admin/ckeditor/ckeditor.js') }}"></script>
- <script>
- 	$('.select2').select2()
- 	$( function() {
- 		CKEDITOR.replace('editor1')
- 	})
- </script>
+
+	<script src="{{ asset('js/select2.full.min.js') }}"></script>
+	<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+	<script>
+		$('.select2').select2()
+		$( function() {
+			CKEDITOR.replace('editor1')
+		})
+	</script>
+ 
 @endsection

@@ -2,40 +2,34 @@
 
 @section('title', 'Create A New Tag')
 
-@section('styles')
-	
-@endsection
-
 @section('content')
 
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+	<h2 class="h2">Create New Tags</h2>
+</div>
+
+<form action="{{ route('tags.store') }}" method="post">
+	@csrf
 	<div class="row">
-		<div class="col-lg-12">
-			<h1 class="page-header">Create New Tag</h1>
+		<div class="col-md-6 offset-3">
+
+			<div class="form-group">
+				<label for="name">Tag Name</label>
+				<input type="text" name="name" id="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" value="{{ old('name') }}">
+				@if($errors->has('name'))
+				<span class="invalid-feedback">
+					<strong>{{ $errors->first('name') }}</strong>
+				</span>
+				@endif
+			</div>
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-outline-success">Save New Tag</button>
+				<a href="{{ route('tags.index') }}" class="btn btn-outline-danger">Cancel</a>
+			</div>
+
 		</div>
 	</div>
+</form>
 
-	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<form action="{{ route('tags.store') }}" method="post">
-				{{ csrf_field() }}
-				<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-					<label for="name">Tag Name:</label>
-					<input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
-					@if($errors->has('name'))
-						<span class="help-block">
-							<strong>{{ $errors->first('name') }}</strong>
-						</span>
-					@endif
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-success">Save New Tag</button>
-				</div>
-			</form>
-		</div>
-	</div>
-
-@endsection
-
-@section('scripts')
- 
 @endsection

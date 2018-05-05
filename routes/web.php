@@ -15,9 +15,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
 Route::prefix('admin-panel')->namespace('Admin')->group( function () {
 	Route::get('/', 'HomeController@index')->name('admin.dashboard');
-	Route::resource('posts', 'PostController');
-	Route::resource('tags', 'TagController');
-	Route::resource('categories', 'CategoryController');
+	Route::get('/dashboard', 'HomeController@dashboard');
+	Route::resources([
+		'posts' => 'PostController',
+		'tags' => 'TagController',
+		'categories' => 'CategoryController',
+		'users' => 'UserController',
+		'roles' => 'RoleController',
+		'permissions' => 'PermissionController',
+		'admins' => 'AdminController'
+	]);
+	Route::get('admin-login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+	Route::post('admin-login', 'Auth\AdminLoginController@login');
 });

@@ -3,83 +3,72 @@
 @section('title', 'All Tags')
 
 @section('styles')
- <link rel="stylesheet" href="{{ asset('admin/vendor/datatables-plugins/dataTables.bootstrap.css') }}">
- <link rel="stylesheet" href="{{ asset('admin/vendor/datatables-responsive/dataTables.responsive.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
 @endsection
 
 @section('content')
 
-	<div class="row">
-		<div class="col-lg-12">
-			@include('layouts._messages')
-			<h1 class="page-header">All Tags <a href="{{ route('tags.create') }}" class="btn btn-success pull-right">Add New Tag</a></h1>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+	<h2 class="h2">All Tags</h2>
+	<a href="{{ route('tags.create') }}" class="btn btn-outline-success">Add New Tag</a>
+</div>
+
+@include('layouts._messages')
+<!-- /.row -->
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card bg-light">
+			<div class="card-header">
+				Manage All Tags
+			</div>
+			<div class="card-body">
+				<table class="table table-striped table-bordered table-hover" id="dataTable">
+					<thead>
+						<tr class="text-center">
+							<th>ID</th>
+							<th>Name</th>
+							<th>Created At</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($tags as $tag)
+						<tr class="text-center">
+							<td>{{ $loop->iteration }}</td>
+							<td>{{ $tag->name }}</td>
+							<td>{{ $tag->created_at->diffForHumans() }}</td>
+							<td>
+								<a href="#" class="btn btn-sm btn-outline-info"><i class="fa fa-eye"></i></a>
+								<a href="{{ route('tags.edit', $tag->id) }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i></a>
+								<form action="{{ route('tags.destroy', $tag->id) }}" id="delete-tag-{{ $tag->id }}" style="display: none;" method="post">
+									@csrf
+									@method('DELETE')
+								</form>
+								<button type="submit" class="btn btn-sm btn-outline-danger" onclick="
+								if( confirm('Are you sure, you want to delete this.?')) {
+								event.preventDefault();
+								document.getElementById('delete-tag-{{ $tag->id }}').submit();
+								} else { event.preventDefault(); }">
+								<i class="fa fa-trash"></i></button>
+							</td>
+						</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
-
-	<!-- /.row -->
-	<div class="row">
-	    <div class="col-lg-12">
-	        <div class="panel panel-default">
-	            <div class="panel-heading">
-	                Manage All Tags 
-	            </div>
-	            <!-- /.panel-heading -->
-	            <div class="panel-body">
-	                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-	                    <thead>
-	                        <tr>
-	                            <th width="30">ID</th>
-	                            <th class="text-center">Tag Name</th>
-	                            <th class="text-center">Created At</th>
-	                            <th class="text-center">Action</th>
-	                        </tr>
-	                    </thead>
-	                    <tbody>
-	                        @foreach($tags as $tag)
-	                        	<tr class="odd gradeX">
-	                        	    <td class="text-center">{{ $loop->iteration }}</td>
-	                        	    <td class="text-center">{{ $tag->name }}</td>
-	                        	    <td class="text-center">{{ $tag->created_at->diffForHumans() }}</td>
-	                        	    <td class="text-center">
-	                        	    	<a href="#" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
-	                        	    	<a href="{{ route('tags.edit', $tag->id) }}" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>
-
-	                        	    	<form action="{{ route('tags.destroy', $tag->id) }}" id="delete-tag-{{ $tag->id }}" style="display: none;" method="post">
-	                        	    		{{ csrf_field() }}
-	                        	    		{{ method_field('DELETE') }}
-	                        	    	</form>
-
-	                        	    	<button type="submit" class="btn btn-xs btn-danger" onclick="
-	                        	    	if( confirm('Are you sure, you want to delete this.?')) {
-	                        	    	event.preventDefault();
-	                        	    	document.getElementById('delete-tag-{{ $tag->id }}').submit();
-	                        	    	} else { event.preventDefault(); }">
-	                        	    	<i class="fa fa-trash"></i></button>
-
-	                        	    </td>
-	                        	</tr>
-	                        @endforeach
-	                    </tbody>
-	                </table>
-	            </div>
-	            <!-- /.panel-body -->
-	        </div>
-	        <!-- /.panel -->
-	    </div>
-	    <!-- /.col-lg-12 -->
-	</div>
-
+	<!-- /.col-lg-12 -->
+</div>
 @endsection
 
 @section('scripts')
-	<script src="{{ asset('admin/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('admin/vendor/datatables-plugins/dataTables.bootstrap.min.js') }}"></script>
-	<script src="{{ asset('admin/vendor/datatables-responsive/dataTables.responsive.js') }}"></script>
+
+	<script src="{{ asset('js/datatables.js') }}"></script>
 	<script>
-	$(document).ready(function() {
-	    $('#dataTables-example').DataTable({
-	        responsive: true
-	    });
-	});
+		$(document).ready(function() {
+		    $('#dataTable').DataTable();
+		} );
 	</script>
+	
 @endsection

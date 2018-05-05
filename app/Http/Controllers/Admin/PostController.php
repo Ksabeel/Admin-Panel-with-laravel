@@ -11,6 +11,10 @@ use Session;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -43,17 +47,17 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'       => 'required|min:15|max:255',
-            'slug'        => 'required|min:10|max:60|alpha_dash|unique:posts,slug',
+            'title'       => 'required|min:10|max:255',
+            'slug'        => 'unique:posts,slug',
             'category_id' => 'required',
             'tags'        => 'required',
-            'image'       => 'sometimes|image',
-            'body'        => 'required|min:50'
+            'image'       => 'image',
+            'body'        => 'required|min:5'
         ]);
 
         $post = new Post;
         $post->title = $request->title;
-        $post->slug = $request->slug;
+        $post->slug = str_slug($request->slug);
         $post->category_id = $request->category_id;
         $post->image = $request->image;
         $post->body = $request->body;
@@ -108,7 +112,6 @@ class PostController extends Controller
     {
         $request->validate([
             'title'       => 'required|min:15|max:255',
-            'slug'        => "required|min:10|max:60|alpha_dash|unique:posts,slug,$id",
             'category_id' => 'required',
             'tags'        => 'required',
             'image'       => 'sometimes|image',
@@ -117,7 +120,6 @@ class PostController extends Controller
 
         $post = Post::where('id', $id)->first();
         $post->title = $request->title;
-        $post->slug = $request->slug;
         $post->category_id = $request->category_id;
         $post->image = $request->image;
         $post->body = $request->body;
