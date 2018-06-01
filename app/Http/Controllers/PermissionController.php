@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Permission;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Session;
 

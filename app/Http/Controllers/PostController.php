@@ -1,20 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Controllers\Controller;
-use App\Post;
+use App\Models\Post;
 use App\Tag;
 use Illuminate\Http\Request;
 use Session;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
     /**
      * Display a listing of the resource.
      *

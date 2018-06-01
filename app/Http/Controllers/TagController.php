@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Tag;
 use Session;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.categories.index', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.tags.index', compact('tags'));
     }
 
     /**
@@ -31,7 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.tags.create');
     }
 
     /**
@@ -42,15 +38,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([ 'name' => 'required|min:3|max:100|unique:categories' ]);
+        $request->validate([ 'name' => 'required|min:3|max:100|unique:tags' ]);
 
-        $category = new Category;
-        $category->name = $request->name;
-        $category->save();
+        $tag = new Tag;
+        $tag->name = $request->name;
+        $tag->save();
 
-        Session::flash('success', 'New category added successfully');
+        Session::flash('success', 'New tag added successfully');
 
-        return redirect()->route('categories.index');
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -72,8 +68,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id)->first();
-        return view('admin.categories.edit', compact('category'));
+        $tag = Tag::where('id', $id)->first();
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
@@ -85,15 +81,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([ 'name' => "required|min:3|max:100|unique:categories,name,$id" ]);
+        $request->validate([ 'name' => "required|min:3|max:100|unique:tags,name,$id" ]);
 
-        $category = Category::findOrFail($id)->first();
-        $category->name = $request->name;
-        $category->save();
+        $tag = Tag::where('id', $id)->first();
+        $tag->name = $request->name;
+        $tag->save();
 
-        Session::flash('success', 'Category edited successfully');
+        Session::flash('success', 'Tag edited successfully');
 
-        return redirect()->route('categories.index');
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -104,10 +100,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id)->delete();
+        $tag = Tag::findOrFail($id)->delete();
 
-        Session::flash('success', 'Category deleted successfully');
+        Session::flash('success', 'Tag deleted successfully');
 
-        return redirect()->route('categories.index');
+        return redirect()->route('tags.index');
     }
 }

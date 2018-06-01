@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('admin')->namespace('Admin')->group( function () {
+Route::prefix('admin')->middleware('admin')->group( function () {
 	Route::get('/', 'HomeController@dashboard')->name('admin.dashboard');
 	Route::resources([
 		'posts' => 'PostController',
@@ -28,8 +28,5 @@ Route::prefix('admin')->namespace('Admin')->group( function () {
 		'users' => 'UserController',
 		'roles' => 'RoleController',
 		'permissions' => 'PermissionController',
-		'admins' => 'AdminController'
 	]);
-	Route::get('admin-login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-	Route::post('admin-login', 'Auth\AdminLoginController@login');
 });

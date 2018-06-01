@@ -10,6 +10,7 @@
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 	<h2 class="h2">All Users</h2>
+	<a href="{{ route('users.create') }}" class="btn btn-outline-success">Add New User</a>
 </div>
 
 @include('layouts._messages')
@@ -40,6 +41,7 @@
 							<td>{{ $user->created_at->diffForHumans() }}</td>
 							<td>
 								<a href="#" class="btn btn-sm btn-outline-info"><i class="fa fa-eye"></i></a>
+								<a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i></a>
 								<form action="{{ route('users.destroy', $user->id) }}" id="delete-user-{{ $user->id }}" style="display: none;" method="post">
 									@csrf
 									@method('DELETE')

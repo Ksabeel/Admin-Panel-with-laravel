@@ -21,9 +21,9 @@ class CreateRolesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('admin_role', function (Blueprint $table) {
+        Schema::create('role_user', function (Blueprint $table) {
             $table->integer('role_id')->unsigned();
-            $table->integer('admin_id')->unsigned();
+            $table->integer('user_id')->unsigned();
         });
     }
 
